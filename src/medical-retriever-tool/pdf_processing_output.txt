@@ -1,0 +1,778 @@
+PDF Processing Output
+==================================================
+
+
+==================================================
+Processing pdfs/respiratory_weather.pdf...
+==================================================
+
+
+Processing tables:
+Table 1 on page 3:
+Content: ...
+Table 2 on page 4:
+Content: ...
+Table 3 on page 5:
+Content: ...
+Table 4 on page 6:
+Content: ...
+Table 5 on page 7:
+Content: ...
+Table 6 on page 8:
+Content: ...
+Table 7 on page 9:
+Content: ...
+
+Processing images:
+Image on page 1:
+Caption: 
+Description: 
+OCR Text: ...
+Image on page 1:
+Caption: 
+Description: 
+OCR Text: ...
+Image on page 4:
+Caption: 
+Description: 
+OCR Text: ...
+
+Processing text content:
+
+Created 176 text chunks
+
+Chunk 1 (Type: text):
+Page: 0
+Content: Hindawi Canadian Respiratory Journal Volume 2019, Article ID 3435103, 11 pages https://doi.org/10.1155/2019/3435103
+<!-- image -->
+<!-- image -->
+## Review Article
+## Effects of Meteorological Factors...
+
+Chunk 2 (Type: text):
+Page: 0
+Content: Ph.D. Candidate, Centre for Rural Health Studies, Clinical Epidemiology Department, Faculty of Medicine, Memorial University of Newfoundland, St. John's, Canada 2 MD, MSc, FACP, ABPM, FRCPC, Respirolo...
+
+Chunk 3 (Type: text):
+Page: 0
+Content: . John's, Canada 4 MLIS, Public Services Librarian Health Sciences Library, Memorial University of Newfoundland, St. John's, Canada 5 MD, MPH, Ph.D., Associate Professor, Director of Centre for Rural ...
+
+Chunk 4 (Type: text):
+Page: 0
+Content: Correspondence should be addressed to Shabnam Asghari; shabnam.asghari@med.mun.ca
+Received 22 January 2019; Revised 5 April 2019; Accepted 5 May 2019; Published 2 June 2019
+Academic Editor: Angelo G. ...
+
+Chunk 5 (Type: text):
+Page: 0
+Content: Background . Environmental factors such as weather variables contribute to asthma exacerbation. The impact of meteorological factors on asthma-related hospital admissions (HAs) or emergency department...
+
+Chunk 6 (Type: text):
+Page: 0
+Content: . Objective . This study aims to review the effect of meteorological variables on asthma HAs and EDVs in adults, to identify knowledge gaps and to highlight future research priorities. Method . A syst...
+
+Chunk 7 (Type: text):
+Page: 0
+Content: . The available evidence was summarized and presented using a harvest plot. Results . Our initial search returned a total of 3887 articles. After screening titles, abstracts, and full texts, 16 studie...
+
+Chunk 8 (Type: text):
+Page: 0
+Content: . Four studies (25%) identified thunderstorms as a possible factor associated with asthma hospitalization in adults. Conclusion . Our review suggests that HAs and EDVs due to asthma are associated wit...
+
+Chunk 9 (Type: text):
+Page: 0
+Content: . To develop effective strategies to protect subjects at risk, further studies are required....
+
+Chunk 10 (Type: text):
+Page: 0
+Content: ## 1. Introduction...
+
+Chunk 11 (Type: text):
+Page: 0
+Content: Asthma is a chronic inflammatory condition which is characterized by reversible air flow obstruction [1]. Those affected by this condition may present symptoms such as wheezing, breathlessness, coughi...
+
+Chunk 12 (Type: text):
+Page: 0
+Content: . While the etiology of asthma is currently unknown, it is believed that factors such as genetics, lifestyle choices, and environmental factors contribute to asthma exacerbation which may lead to HAs ...
+
+Chunk 13 (Type: text):
+Page: 0
+Content: Among environmental factors, weather and air pollution play an important role in increasing asthma exacerbations,...
+
+Chunk 14 (Type: text):
+Page: 0
+Content: which require special care or even hospitalization [4]. Many studies including systematic reviews assessed the effect of pollen, allergens, and air pollutions on asthma hospitalization. While many stu...
+
+Chunk 15 (Type: text):
+Page: 0
+Content: . One theory suggests that water loss in airways during cold conditions causes inflammation that leads to asthma attacks [2]. Another theory suggests that cold and dry air increases the rate of evapor...
+
+Chunk 16 (Type: text):
+Page: 0
+Content: Some studies suggest that extreme temperature (both cold and hot) and high winds could increase EDVs and hospitalizations among those with asthma [9, 10]. In contrast, other authors did not find any c...
+
+Chunk 17 (Type: text):
+Page: 0
+Content: . The objectives of this review are (1) to summarize and evaluate the effects of meteorological variables on asthma hospitalization and EDVs in adults, (2) to identify knowledge gaps, and (3) to highl...
+
+Chunk 18 (Type: text):
+Page: 0
+Content: ## 2. Methods...
+
+Chunk 19 (Type: text):
+Page: 0
+Content: 2.1. Review Question. Our systematic review question 'Do weather conditions affect HAs among adults living with asthma?' was defined using the PECO question format where the study P opulation is adult...
+
+Chunk 20 (Type: text):
+Page: 0
+Content: . The C ontrol groups are adults with asthma who were not exposed to weather variables, and the O utcome is any admission to hospital units or emergency departments as reported in the manuscripts....
+
+Chunk 21 (Type: text):
+Page: 0
+Content: 2.2. Data Sources. We searched large electronic databases containing health and medical literature: PubMed (1946 to December 2018), Embase via Embase.com (1947 to December 2018) and CINAHL via Ebsco (...
+
+Chunk 22 (Type: text):
+Page: 0
+Content: 2.3. Search Strategy. A series of relevant terms were identified through consultation between content experts and a librarian. The keywords and Medical Subject Headings (MeSH) for this review fall und...
+
+Chunk 23 (Type: text):
+Page: 0
+Content: . We included a combination of keywords such as temperature, precipitation, thunderstorm, wind speed, and air pressure that could potentially influence asthma hospitalizations and EDVs (see Table 1, a...
+
+Chunk 24 (Type: text):
+Page: 0
+Content: 2.4. Inclusion Criteria. Studies included in this review consisted of original research papers from peer-reviewed journals and those published in the English language. We identified studies that focus...
+
+Chunk 25 (Type: text):
+Page: 0
+Content: Dissertations, audits, policy analyses, book reviews, pilot studies, perspective articles, and research at the planning stage (unless provided in the research directory) were excluded. We also exclude...
+
+Chunk 26 (Type: text):
+Page: 0
+Content: 2.5. Directory of Identified Studies. A directory of publications was created in RefWorks. We used Mendeley to capture and tag the web pages' information, which we then imported into RefWorks.
+2.6. St...
+
+Chunk 27 (Type: text):
+Page: 0
+Content: 2.6.1. Stage 1: Prescreening. After removing duplicates, the titles and abstracts were screened by one reviewer (EB). We then selected articles that were deemed eligible for full-text review. A random...
+
+Chunk 28 (Type: text):
+Page: 0
+Content: 2.6.2. Stage 2: Full-Text Review. We performed a full text review of relevant articles found in the prescreening phase. Two reviewers (EB and CM) independently checked the fulltexts of the articles ag...
+
+Chunk 29 (Type: text):
+Page: 0
+Content: 2.7. Data Extraction. A data extraction tool was developed using Excel. The data extraction tool included the following six characteristics: citations (e.g., authors, publication year, journal, and pl...
+
+Chunk 30 (Type: text):
+Page: 0
+Content: Data extraction was conducted by two independent reviewers (EB and CM). A calibration test was performed on the first 10% of the reviewed studies. The Kappa index was calculated to assess inter-review...
+
+Chunk 31 (Type: text):
+Page: 0
+Content: 1
+'asthma' [MeSH Terms] OR 'asthma' [All Fields] OR ('chronic' [All Fields] AND 'respiratory' [All Fields] AND 'disease' [All Fields]) OR 'chronic respiratory disease' [All Fields] OR 'asthma' [Mesh]
+...
+
+Chunk 32 (Type: text):
+Page: 0
+Content: 223989
+'hospitalization' [Mesh] OR 'emergency service, hospital' [Mesh] OR (('hospitals' [MeSH terms] OR 'hospitals' [All fields] OR 'hospital' [All fields]) AND admission [All fields]) OR ('length of...
+
+Chunk 33 (Type: text):
+Page: 0
+Content: - 2 'hospital stay' [All fields]) OR (('hospitals' [MeSH terms] OR 'hospitals' [All fields] OR 'hospital' [All fields]) AND admissions [All fields]) OR ('length of stay' [MeSH terms] OR ('length' [All...
+
+Chunk 34 (Type: text):
+Page: 0
+Content: 'weather' [Mesh] OR meteorological [All fields] OR ('weather' [MeSH terms] OR 'weather' [All fields]) OR('temperature' [MeSH terms] OR 'temperature' [All fields]) OR ('humidity' [MeSH terms] OR 'humid...
+
+Chunk 35 (Type: text):
+Page: 0
+Content: [All fields]) OR storm [All fields] OR ('cyclonic storms' [MeSH terms] OR ('cyclonic' [All fields] AND 'storms' [All fields]) OR 'cyclonic storms' [All fields] OR 'Hurricane' [All fields]) OR ('tornad...
+
+Chunk 36 (Type: text):
+Page: 0
+Content: OR atmospheric [All fields] OR 'air pressure' [All fields] OR ('climate' [MeSH terms] OR 'climate' [All fields]) OR ('seasons' [MeSH terms] OR 'seasons' [All fields]) OR seasonal [All fields] OR 'thun...
+
+Chunk 37 (Type: text):
+Page: 0
+Content: 1298001
+| 4 1 AND 2 AND                                        |   1631 |
+|------------------------------------------------------|--------|
+| 5 4 AND publication date to Nov. 17, 2017            |   1...
+
+Chunk 38 (Type: text):
+Page: 0
+Content: was considered a good agreement). The discordant items were reassessed, and the data extraction tool was revised accordingly. The reviewers met weekly to discuss the extracted data and resolve any dis...
+
+Chunk 39 (Type: text):
+Page: 0
+Content: 2.8. Quality Assessment. We used the Critical Appraisal Skills Program (CASP, 2014) tool to assess the quality and risk of bias of included studies. The tool assesses the study design, population of s...
+
+Chunk 40 (Type: text):
+Page: 0
+Content: 2.9. Synthesis of Results and Data Display. We described all studies that met the eligibility criteria including their quality score. We quantified the frequency of the reported meteorological variabl...
+
+Chunk 41 (Type: text):
+Page: 0
+Content: We developed a harvest plot to present our systematic review results (Figure 2). A harvest plot is a novel approach to graphically summarize the results of a systematic review of complex and diverse s...
+
+Chunk 42 (Type: text):
+Page: 0
+Content: . The results of our systematic review show three outcomes (increasing effect, decreasing effect, and no effect) and six weather variables as the exposure which includes temperature, wind speed, fog, ...
+
+Chunk 43 (Type: text):
+Page: 0
+Content: . Each vertical bar of the plot was colored to indicate the effect of that variable on asthma-related admissions (increasing effect, decreasing effect, and no effect) and the size of bar indicates the...
+
+Chunk 44 (Type: text):
+Page: 0
+Content: ## 3. Results...
+
+Chunk 45 (Type: text):
+Page: 0
+Content: Our search for asthma-related HAs due to weather factors returned a total of 2677 articles after deduplication. 1512 studies were excluded while screening for titles and abstracts. During full-text re...
+
+Chunk 46 (Type: text):
+Page: 0
+Content: . Among them, 65 were excluded as the study population was only children, resulting in 16 studies to be included in this review. Figure 1 shows the PRISMA flow diagram of the included studies....
+
+Chunk 47 (Type: text):
+Page: 0
+Content: 3.1. Study Characteristics. Seven of the 16 included studies were conducted in Asia (five in East Asia), five in the USA, two in Europe, and two in Australia (Table 2). Overall, these 16 studies cover...
+
+Chunk 48 (Type: text):
+Page: 0
+Content: .5 years with a standard deviation of 7.13 years. Aside from the single study with a case-control design, one ecological study, and one cohort study, eight studies in this review used timeseries analy...
+
+Chunk 49 (Type: text):
+Page: 0
+Content: . All ) studies compared the individuals before and after they were exposed to weather conditions. There were no external comparison groups....
+
+Chunk 50 (Type: text):
+Page: 0
+Content: <!-- image -->
+Figure 1: Preferred Reporting items for Systematic Reviews (PRISMA) diagram.
+|                   | ED visits       | ED visits   |                 | Hospital admission   | Hospital admi...
+
+Chunk 51 (Type: text):
+Page: 0
+Content: |                   | Decrease effect | No effect   | Increase effect | Decrease effect      | No effect            | Increase effect      |
+| Temperature       | 2               |             | 2    ...
+
+Chunk 52 (Type: text):
+Page: 0
+Content: | Thunderstorm      |                 |             | 3               |                      |                      | 1                    |
+| Fog               |                 |             | 1    ...
+
+Chunk 53 (Type: text):
+Page: 0
+Content: | Rainfall          |                 |             | 2               | 1                    | 1                    | 5                    |
+ED Visits - Emergency Department Visits
+Meteorological fact...
+
+Chunk 54 (Type: text):
+Page: 0
+Content: Figure 2: Evidence for the effect of meteorological factors on hospitalization and EDVs among adults with asthma. The rows indicate the all meteorological variables that affect asthma-related admissio...
+
+Chunk 55 (Type: text):
+Page: 0
+Content: . The length of each bar shows the quality (good, fair, and poor) of the studies. The colors of each indicate the increase or decrease effect of the variable....
+
+Chunk 56 (Type: text):
+Page: 0
+Content: 7503, 2019, 1, Downloaded from https://onlinelibrary.wiley.com/doi/10.1155/2019/3435103, Wiley Online Library on [01/06/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-c...
+
+Chunk 57 (Type: text):
+Page: 0
+Content: | Author                      | Objective                                                                                                                | Study design                         | Data s...
+
+Chunk 58 (Type: text):
+Page: 0
+Content: |-----------------------------|--------------------------------------------------------------------------------------------------------------------------|--------------------------------------|-------...
+
+Chunk 59 (Type: text):
+Page: 0
+Content: |                             |                                                                                                                          |                                      | Health...
+
+Chunk 60 (Type: text):
+Page: 0
+Content: | Abe et al. [6]              | Investigate the relationship of weather conditions and asthma exacerbation                                               | Time-series                          | Tokyo ...
+
+Chunk 61 (Type: text):
+Page: 0
+Content: | Anderson et al. [14]        | Investigate associations between asthma admissions and thunderstorms                                                     | Case control                         | Comput...
+
+Chunk 62 (Type: text):
+Page: 0
+Content: | Buckley and Richardson [15] | Characterize the effect of temperature on EDVs for asthma Investigate the relationships                                  | Case- crossover                      | Epidem...
+
+Chunk 63 (Type: text):
+Page: 0
+Content: | Delamater et al. [16]3      | between air pollution, weather conditions, and asthma hospitalizations Investigate whether                               | Ecological                           | Health...
+
+Chunk 64 (Type: text):
+Page: 0
+Content: | Fitzgerald et al. [11]      | prolonged periods of very cold temperatures are associated with an increased risk of hospitalization for asthma patients | Time-series                          | New Yo...
+
+Chunk 65 (Type: text):
+Page: 0
+Content: | Grundstein et al. [17]      | association between thunderstorm activity and asthma morbidity Determine the relationship between                        | Time-series                          | EDV da...
+
+Chunk 66 (Type: text):
+Page: 0
+Content: | Kunikullaya et al., 20173   | acute exacerbations of asthma and related HAs due to air pollution and meteorological conditions                         | Retrospective ecological time-series | Admiss...
+
+Chunk 67 (Type: text):
+Page: 0
+Content: | Kwon et al. [18]3           | Estimate the effect of climate factors and air pollution on asthma hospitalization Evaluate                              | Case- crossover                      | Kangwo...
+
+Chunk 68 (Type: text):
+Page: 0
+Content: | Lam et al. [19]             | associations between asthma hospitalizations and meteorological factors in Hong Kong.                                    | Time-series                          | Hospit...
+
+Chunk 69 (Type: text):
+Page: 0
+Content: | Author              | Objective                                                                                                                                                   | Study design      ...
+
+Chunk 70 (Type: text):
+Page: 0
+Content: effect   | Measures of effect   | Study outcome   |         |...
+
+Chunk 71 (Type: text):
+Page: 0
+Content: |---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------...
+
+Chunk 72 (Type: text):
+Page: 0
+Content: ----------|----------------------|-----------------|---------|...
+
+Chunk 73 (Type: text):
+Page: 0
+Content: |                     |                                                                                                                                                             |                   ...
+
+Chunk 74 (Type: text):
+Page: 0
+Content: | RR Count             | EDV 1 HA        | Quality |...
+
+Chunk 75 (Type: text):
+Page: 0
+Content: | Qasem et al...
+
+Chunk 76 (Type: text):
+Page: 0
+Content: . [20]3  | Explore which weather factors contribute to asthma hospitalization while controlling for pollen and spore                                                   | Retrospective time-series study...
+
+Chunk 77 (Type: text):
+Page: 0
+Content: | Qiu et al...
+
+Chunk 78 (Type: text):
+Page: 0
+Content: . [21]     | Examine the health effects of environmental triggers on asthma Evaluate the relationships                                                                   | Longitudinal time-series     ...
+
+Chunk 79 (Type: text):
+Page: 0
+Content: | Rossi et al...
+
+Chunk 80 (Type: text):
+Page: 0
+Content: . [22]3  | between EDVs for asthma attacks and the meteorological, aerobiological, and chemical characteristics of the outdoor air Investigate the association between | Time-series                    ...
+
+Chunk 81 (Type: text):
+Page: 0
+Content: | Soneja et al...
+
+Chunk 82 (Type: text):
+Page: 0
+Content: ., 2016 | exposure to extreme heat and precipitation events and risk of hospitalization for asthma                                                                    | Case- crossover                 ...
+
+Chunk 83 (Type: text):
+Page: 0
+Content: | Zhang et al. [9]    | Evaluate the short- term effects of daily mean temperature on asthma HAs...
+
+Chunk 84 (Type: text):
+Page: 0
+Content: . Assess the demand                                                                 | Time-series                     | Health Insurance System of Shanghai                                             ...
+
+Chunk 85 (Type: text):
+Page: 0
+Content: | Andrew et al...
+
+Chunk 86 (Type: text):
+Page: 0
+Content: . [23]  | for emergency medical services during epidemic thunderstorm asthma                                                                                          | Time-series                     ...
+
+Chunk 87 (Type: text):
+Page: 0
+Content: | Thien et al...
+
+Chunk 88 (Type: text):
+Page: 0
+Content: . [24]   | Investigate the effect of thunderstorm asthma on health services and patient risk factors                                                                   | Cross- sectional               ...
+
+Chunk 89 (Type: text):
+Page: 0
+Content: 1 EDVs: emergency department visits for asthma. 2 HAs: hospital admissions for asthma. 3 Air pollution was considered a confounder in these studies....
+
+Chunk 90 (Type: text):
+Page: 0
+Content: 3.2. WeatherVariables. As shown in Tables 3 and 4, 31% (5/ 16) of the studies found that temperature was the only factor associated with asthma hospitalization or EDVs [4, 9, 11, 15, 18, 25]. Nearly 3...
+
+Chunk 91 (Type: text):
+Page: 0
+Content: . We did not find any studies that measured weather variables such as barometric pressure, different types of storms (tropical storm, and snow storm), and tornados....
+
+Chunk 92 (Type: text):
+Page: 0
+Content: Table 3: Studies that examine the effect of meteorological factors on EDVs....
+
+Chunk 93 (Type: text):
+Page: 0
+Content: |                      |                              |               | Meteorological risk factors   | Meteorological risk factors   | Meteorological risk factors   | Meteorological risk factors   | ...
+
+Chunk 94 (Type: text):
+Page: 0
+Content: |----------------------|------------------------------|---------------|-------------------------------|-------------------------------|-------------------------------|-------------------------------|-...
+
+Chunk 95 (Type: text):
+Page: 0
+Content: | Location             | Author                       | Sample size   | Temperature                   | Relative humidity             | Thunderstorm                  | Fog                           | ...
+
+Chunk 96 (Type: text):
+Page: 0
+Content: | North America        | North America                | North America | North America                 | North America                 | North America                 | North America                 | ...
+
+Chunk 97 (Type: text):
+Page: 0
+Content: | North Carolina, USA  | Buckley and Richardson. [15] | 53, 156       | YES                           |                               |                               |                               | ...
+
+Chunk 98 (Type: text):
+Page: 0
+Content: | Atlanta, USA         | Grundstein et al. [17]       | 215, 832      |                               |                               | YES                           |                               | ...
+
+Chunk 99 (Type: text):
+Page: 0
+Content: | Europe               | Europe                       | Europe        | Europe                        | Europe                        | Europe                        | Europe                        | ...
+
+Chunk 100 (Type: text):
+Page: 0
+Content: | Oulu, Finland        | Rossi et al. [22]            | 232           | YES                           | YES                           |                               |                               | ...
+
+Chunk 101 (Type: text):
+Page: 0
+Content: | East Asia            | East Asia                    | East Asia     | East Asia                     | East Asia                     | East Asia                     | East Asia                     | ...
+
+Chunk 102 (Type: text):
+Page: 0
+Content: | Chuncheon, Korea     | Kwon et al. [18]             | 660           | YES                           | YES                           |                               | YES                           | ...
+
+Chunk 103 (Type: text):
+Page: 0
+Content: | Tokyo, Japan         | Abe et al. [6]               | 643, 849      | YES                           | YES                           |                               |                               | ...
+
+Chunk 104 (Type: text):
+Page: 0
+Content: | Hong Kong            | Qiu et al. [21]              | 45, 896       | YES                           | YES                           |                               |                               | ...
+
+Chunk 105 (Type: text):
+Page: 0
+Content: | Victoria, Australia  | Andrew et al. [23]           | 2954          | YES                           |                               | YES                           |                               | ...
+
+Chunk 106 (Type: text):
+Page: 0
+Content: | Melbourne, Australia | Thien et al. [24]            | 3365          | YES                           | YES                           | YES                           |                               | ...
+
+Chunk 107 (Type: text):
+Page: 0
+Content: Table 4: Studies that examine the effect of meteorological factors on HAs....
+
+Chunk 108 (Type: text):
+Page: 0
+Content: | Meteorological risk factors   | Meteorological risk factors   | Meteorological risk factors   | Meteorological risk factors   | Meteorological risk factors   | Meteorological risk factors   | Meteor...
+
+Chunk 109 (Type: text):
+Page: 0
+Content: |...
+
+Chunk 110 (Type: text):
+Page: 0
+Content: |-------------------------------|-------------------------------|-------------------------------|-------------------------------|-------------------------------|-------------------------------|-------...
+
+Chunk 111 (Type: text):
+Page: 0
+Content: -----------------------------------------------------------------------------------------------------------------|...
+
+Chunk 112 (Type: text):
+Page: 0
+Content: | Location                      | Author                        | Sample size                   | Temperature                   | Relative humidity             | Thunderstorm                  | Wind s...
+
+Chunk 113 (Type: text):
+Page: 0
+Content: |...
+
+Chunk 114 (Type: text):
+Page: 0
+Content: | Europe Average daily          | Europe Average daily          | Europe Average daily          | Europe Average daily          | Europe Average daily          | Europe Average daily          | Europe...
+
+Chunk 115 (Type: text):
+Page: 0
+Content: |...
+
+Chunk 116 (Type: text):
+Page: 0
+Content: | Cardiff and Newport, UK       | Anderson et al. [14]          | 2000                          |                               |                               | YES                           |       ...
+
+Chunk 117 (Type: text):
+Page: 0
+Content: .1, May-September, p � 0 . 04). More admissions occurred during thunderstorms ( p � 0 . 04); however, there was no relationship |...
+
+Chunk 118 (Type: text):
+Page: 0
+Content: | North America                 | North America                 | North America                 | North America                 | North America                 | North America                 | North ...
+
+Chunk 119 (Type: text):
+Page: 0
+Content: |...
+
+Chunk 120 (Type: text):
+Page: 0
+Content: | Los Angeles, USA              | Delamater et al. [16]         | 250, 000                      | YES                           | YES                           |                               |       ...
+
+Chunk 121 (Type: text):
+Page: 0
+Content: .481 per 100,000 admissions)                                                                                                                           |...
+
+Chunk 122 (Type: text):
+Page: 0
+Content: | New York, USA                 | Fitzgerald et al. [11]        | 237, 639                      | YES                           |                               |                               | YES   ...
+
+Chunk 123 (Type: text):
+Page: 0
+Content: .6, 95% CI: 5.5% to 13.9%) and April (mean � 5.0, 95%                                                                                             |...
+
+Chunk 124 (Type: text):
+Page: 0
+Content: | Maryland, USA                 | Soneja et al., 2016           | 115, 923                      | YES                           |                               |                               |       ...
+
+Chunk 125 (Type: text):
+Page: 0
+Content: .03, 95% CI: 1.00 to 1.07)                                                                                                                    |...
+
+Chunk 126 (Type: text):
+Page: 0
+Content: | South Asia                    | South Asia                    | South Asia                    | South Asia                    | South Asia                    | South Asia                    | South ...
+
+Chunk 127 (Type: text):
+Page: 0
+Content: |...
+
+Chunk 128 (Type: text):
+Page: 0
+Content: | Bangalore, India              | Kunikullaya et al., 2017      | 1768                          | YES                           | YES                           |                               |       ...
+
+Chunk 129 (Type: text):
+Page: 0
+Content: . 015)                                                           |...
+
+Chunk 130 (Type: text):
+Page: 0
+Content: | Middle East                   | Middle East                   | Middle East                   | Middle East                   | Middle East                   | Middle East                   | Middle...
+
+Chunk 131 (Type: text):
+Page: 0
+Content: |...
+
+Chunk 132 (Type: text):
+Page: 0
+Content: | Kuwait                        | Qasem et al. [20]             | 4353                          | YES                           | YES                           |                               | YES   ...
+
+Chunk 133 (Type: text):
+Page: 0
+Content: .7, p < 0 . 03)                                                                                         |...
+
+Chunk 134 (Type: text):
+Page: 0
+Content: | East Asia                     | East Asia                     | East Asia                     | East Asia                     | East Asia                     | East Asia                     | East A...
+
+Chunk 135 (Type: text):
+Page: 0
+Content: |...
+
+Chunk 136 (Type: text):
+Page: 0
+Content: | Shanghai, China               | Zhang et al. [9]              | 15, 678                       | YES                           | YES                           |                               | YES   ...
+
+Chunk 137 (Type: text):
+Page: 0
+Content: .20 (95% CI: 1.01 to 1.41) for lower temperatures                                                                                                                               |...
+
+Chunk 138 (Type: text):
+Page: 0
+Content: T able 4: Continued.
+| Meteorological risk factors   | Meteorological risk factors   | Meteorological risk factors   | Meteorological risk factors   | Meteorological risk factors   | Meteorological ri...
+
+Chunk 139 (Type: text):
+Page: 0
+Content: |-------------------------------|-------------------------------|-------------------------------|-------------------------------|-------------------------------|-------------------------------|-------...
+
+Chunk 140 (Type: text):
+Page: 0
+Content: | Location                      | Author                        | Sample size                   | Temperature                   | Relative humidity             | Thunderstorm                  | Wind s...
+
+Chunk 141 (Type: text):
+Page: 0
+Content: | Hong Kong                     | Lam et al. [19]               | 56, 112                       | YES                           | YES                           |                               | YES   ...
+
+Chunk 142 (Type: text):
+Page: 0
+Content: 3.3. Effect of Meteorological Factors on Hospitalization. Only one study showed a negative correlation between asthma hospitalization and daily mean temperature (5.79% risk increase, p � 0 012) and lo...
+
+Chunk 143 (Type: text):
+Page: 0
+Content: .11, p &lt; 0 01) [22] and one in . China ( r � -0.174, p &lt; 0 001) [9], have reported that asthmatic . symptoms that lead to admission are influenced by daily temperature change during the study pe...
+
+Chunk 144 (Type: text):
+Page: 0
+Content: 3.4. Effect of Meteorological Factors on EDVs. One study reported that during the summer months, EDVs for asthmatic patients had increased with increasing temperature and humidity [22]. Lower relative...
+
+Chunk 145 (Type: text):
+Page: 0
+Content: Our review suggests that temperature variation can have both a positive or negative correlation with asthma hospital admissions, depending on the season and geographic area. The temperature measuremen...
+
+Chunk 146 (Type: text):
+Page: 0
+Content: . Aside from temperature, other weather variables including relative humidity and precipitation [18, 19, 20], wind speed [17], and thunderstorms [24] could influence asthmatic patients' condition and ...
+
+Chunk 147 (Type: text):
+Page: 0
+Content: This study suggests that changes in weather variables could increase EDVs due to asthma. Temperature variation was the most frequently studied factor among the included studies. Thunderstorms [17], ra...
+
+Chunk 148 (Type: text):
+Page: 0
+Content: . It is important to note that the definition of weather variables and EDVs have not been consistent across all studies....
+
+Chunk 149 (Type: text):
+Page: 0
+Content: Our review has some limitations. First, many studies included in this review did not adjust for the effect of air pollution and pollens where the effect of weather variables was assessed. Air pollutio...
+
+Chunk 150 (Type: text):
+Page: 0
+Content: . Another study by the same author reported asthma exacerbations due to the increased pollen in the air during thunderstorms [29]....
+
+Chunk 151 (Type: text):
+Page: 0
+Content: Other studies indicated a significant increase in the number of patients with bronchial asthma visiting an emergency clinic during December due to fungal spores [20]. A systematic review by Zheng et a...
+
+Chunk 152 (Type: text):
+Page: 0
+Content: Only peer-reviewed articles published in English were included, making it possible that we missed studies published in other languages or in the grey literature.
+Although there were no limitations to ...
+
+Chunk 153 (Type: text):
+Page: 0
+Content: To our knowledge, this is the first systematic review assessing the effects of meteorological factors on asthma hospitalizations. We identified only 16 studies, 6.25% (1/16) with poor quality, suggest...
+
+Chunk 154 (Type: text):
+Page: 0
+Content: Information on how particular weather events, such as extreme wind or cold, could affect asthma HAs is essential to predict hospital demands and to help prevent exacerbation among patients with asthma...
+
+Chunk 155 (Type: text):
+Page: 0
+Content: . Our study suggests the possibility of a gap in the knowledge regarding the effect of...
+
+Chunk 156 (Type: text):
+Page: 0
+Content: barometric pressure, weather phenomena, and tornados. Due to inconsistencies of the methodological approaches and the differences in statistical analyses in the included articles, we were not able to ...
+
+Chunk 157 (Type: text):
+Page: 0
+Content: ## References
+- [1] P. Subbarao, P. J. Mandhane, and M. R. Sears, 'Asthma: epidemiology, etiology and risk factors,' Canadian Medical Association Journal , vol. 181, no. 9, pp. E181-E190, 2009.
+- [2] ...
+
+Chunk 158 (Type: text):
+Page: 0
+Content: - [3] P. Michelozzi, G. Accetta, M. De Sario et al., 'High temperature and hospitalizations for cardiovascular and respiratory causes in 12 European cities,' American Journal of Respiratory and Critic...
+
+Chunk 159 (Type: text):
+Page: 0
+Content: - [4] G. D'Amato, C. E. Baena-Cagnani, L Cecchi et al., 'Climate change, air pollution and extreme events leading to the increasing prevalence of allergic respiratory diseases,' Multidisciplinary Resp...
+
+Chunk 160 (Type: text):
+Page: 0
+Content: - [5] M. Li, Q. Li, G. Yang, V. P. Kolosov, J. M. Perelman, and X. D. Zhou, 'Cold temperature induces mucin hypersecretion from normal human bronchial epithelial cells in vitro through a transient rec...
+
+Chunk 161 (Type: text):
+Page: 0
+Content: - [6] T. Abe, Y. Tokuda, S. Ohde, S. Ishimatsu, T. Nakamura, and R. B. Birrer, 'The relationship of short-term air pollution and weather to ED visits for asthma in Japan,' American Journal of Emergenc...
+
+Chunk 162 (Type: text):
+Page: 0
+Content: - [8] H. O. Koskela, 'Cold air-provoked respiratory symptoms: the mechanisms and management,' International Journal of Circumpolar Health , vol. 66, no. 2, pp. 91-100, 2007.
+- [9] Y. Zhang, L. Peng, H...
+
+Chunk 163 (Type: text):
+Page: 0
+Content: - [10] M. J. Strickland, L. A. Darrow, M. Klein et al., 'Short-term associations between ambient air pollutants and pediatric asthma emergency department visits,' American Journal of Respiratory and C...
+
+Chunk 164 (Type: text):
+Page: 0
+Content: - [12] D. Ogilvie, D. Fayter, M. Petticrew et al., 'The harvest plot: a method for synthesising evidence about the differential effects
+- of interventions,' BMC Medical Research Methodology , vol. 8, ...
+
+Chunk 165 (Type: text):
+Page: 0
+Content: - [14] W. Anderson, G. J. Prescott, S. Packham, J. Mullins, M. Brookes, and A. Seaton, 'Asthma admissions and thunderstorms: a study of pollen, fungal spores, rainfall, and ozone,' QJM , vol. 94, no. ...
+
+Chunk 166 (Type: text):
+Page: 0
+Content: - [16] P. L. Delamater, A. O. Finley, and S. Banerjee, 'An analysis of asthma hospitalizations, air pollution, and weather conditions in Los Angeles County, California,' Science of The Total Environme...
+
+Chunk 167 (Type: text):
+Page: 0
+Content: - [18] J.-W. Kwon, Y.-J. Han, M. K. Oh et al., 'Emergency department visits for asthma exacerbation due to weather conditions and air pollution in Chuncheon, Korea: a casecrossover analysis,' Allergy,...
+
+Chunk 168 (Type: text):
+Page: 0
+Content: - [19] H. C. Y. Lam, A. M. Li, E. Y. Y. Chan, and W. B. Goggins, 'The short-term association between asthma hospitalisations, ambient temperature, other meteorological factors and air pollutants in Ho...
+
+Chunk 169 (Type: text):
+Page: 0
+Content: - [20] J. A. Qasem, H. Nasrallah, B. N. Al-Khalaf et al., 'Meteorological factors, aeroallergens and asthma-related visits in Kuwait: a 12-month retrospective study,' Annals of Saudi Medicine , vol. 2...
+
+Chunk 170 (Type: text):
+Page: 0
+Content: - [22] O. V. Rossi, V. L. Kinnula, J. Tienari, and E. Huhti, 'Association of severe asthma attacks with weather, pollen, and air pollutants,' Thorax , vol. 48, no. 3, pp. 244-248, 1993.
+- [23] E. Andr...
+
+Chunk 171 (Type: text):
+Page: 0
+Content: - [24] F. Thien, P. J. Beggs, D. Csutoros et al., 'The Melbourne epidemic thunderstorm asthma event 2016: an investigation of environmental triggers, effect on health services, and patient risk factor...
+
+Chunk 172 (Type: text):
+Page: 0
+Content: - [25] K. U. Kunikullaya, A. Vijayaraghava, P. Asha, R. Kunnavil, and B. V. MuraliMohan, 'Meteorological parameters and pollutants on asthma exacerbation in Bangalore, India-an ecological retrospectiv...
+
+Chunk 173 (Type: text):
+Page: 0
+Content: - [26] S. Soneja, C. Jiang, J. Fisher, C. R. Upperman, C. Mitchell, and A. Sapkota, 'Exposure to extreme heat and precipitation events associated with increased risk of hospitalization for asthma in M...
+
+Chunk 174 (Type: text):
+Page: 0
+Content: - [27] G. D'Amato, S. T. Holgate, R. Pawankar et al., 'Meteorological conditions, climate change, new emerging factors, and asthma and related allergic disorders: a statement of the World Allergy Orga...
+
+Chunk 175 (Type: text):
+Page: 0
+Content: - [29] G. D'Amato, C. Vitale, M. D'Amato et al., 'Thunderstormrelated asthma: what happens and why,' Clinical &amp; Experimental Allergy , vol. 46, no. 3, pp. 390-396, 2016.
+- [30] X.-Y. Zheng, H. Din...
+
+Chunk 176 (Type: text):
+Page: 0
+Content: - [31] H. G. Cheng and M. R. Phillips, 'Secondary analysis of existing data: opportunities and implementation,' Shanghai Archives of Psychiatry , vol. 26, no. 6, pp. 371-375, 2014.
+- [32] J. Adams, H....
+
+Successfully indexed 176 chunks from pdfs/respiratory_weather.pdf
+
+Indexing complete. Processed 1/1 files, 176 total chunks

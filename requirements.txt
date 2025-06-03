@@ -1,0 +1,31 @@
+# Python 3.11 compatible dependencies for medical-retriever-tool/journal-indexer.py
+# Docling for advanced PDF processing
+docling
+
+# Elasticsearch Python client (for ES 7.x/8.x/9.x clusters)
+elasticsearch==8.11.0
+
+# Core UI dependencies
+streamlit
+python-dotenv
+requests
+pandas
+plotly
+
+# LangChain ecosystem
+# LangChain ecosystem (community integrations, text splitters, embeddings)
+langchain
+langchain-community
+langchain-core
+langchain-ibm
+langgraph
+langchain-huggingface
+
+#OpenAI
+openai
+langchain-openai
+# IBM Watson
+ibm-watsonx-ai
+
+# Fix for PyTorch compatibility
+torch 
