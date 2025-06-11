@@ -2,8 +2,11 @@ import streamlit as st
 import os
 import json
 import logging
+from typing import Dict, Any
 from dotenv import load_dotenv
-from model_factory import get_model_response
+from langchain_core.messages import HumanMessage, AIMessage
+from langgraph.chatbot_graph import create_chatbot, get_default_state
+from langgraph.query_parser.query_parser_tool import ConversationContext
 from config import (
     MODEL_PROVIDER,
     SHOW_MODEL_SELECTOR,
@@ -12,7 +15,13 @@ from config import (
     IBM_MODEL,
     OPENAI_MODEL
 )
+from frontend.weather_visualization import display_weather_data
+from frontend.medical_quotes import display_medical_quotes
+from typing import Dict, List
 import torch
+
+# DO NOT DELETE THE LINE BELOW
+torch.classes.__path__ = [] #
 
 # Configure logging
 logging.basicConfig(
@@ -24,13 +33,6 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
-
-# Log configuration values
-logger.info(f"SHOW_MODEL_SELECTOR value from env: {os.getenv('SHOW_MODEL_SELECTOR')}")
-logger.info(f"SHOW_MODEL_SELECTOR parsed value: {SHOW_MODEL_SELECTOR}")
-
-# DO NOT REMOVE THIS LINE - Fix for torch classes
-torch.classes.__path__ = [os.path.join(torch.__path__[0], torch.classes.__file__)]
 
 # Load environment variables
 load_dotenv()
@@ -96,63 +98,25 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-def load_from_local_storage():
-    """Load all data from local storage."""
-    try:
-        logger.info("Attempting to load data from local storage")
-        # Load chat history
-        if "chat_history" in st.session_state:
-            logger.info("Found chat history in session state")
-            st.session_state.messages = st.session_state.chat_history
-        else:
-            logger.info("No chat history found, initializing empty list")
-            st.session_state.messages = []
-        
-        # Load user info
-        if "user_info" in st.session_state:
-            logger.info("Found user info in session state")
-            return st.session_state.user_info
-        logger.info("No user info found, returning default")
-        return {"name": "", "conditions": []}
-    except Exception as e:
-        logger.error(f"Error loading from local storage: {str(e)}")
-        return {"name": "", "conditions": []}
-
-def save_to_local_storage():
-    """Save all data to local storage."""
-    try:
-        logger.info("Saving data to local storage")
-        # Save chat history
-        st.session_state.chat_history = st.session_state.messages
-        logger.info(f"Saved {len(st.session_state.messages)} chat messages")
-        
-        # Save user info
-        st.session_state.user_info = st.session_state.user_info
-        logger.info(f"Saved user info for: {st.session_state.user_info['name']}")
-    except Exception as e:
-        logger.error(f"Error saving to local storage: {str(e)}")
-
 # Initialize session state
-if "messages" not in st.session_state:
-    logger.info("Initializing messages in session state")
-    st.session_state.messages = []
-
-if "model_preferences" not in st.session_state:
-    logger.info("Initializing model preferences in session state")
-    st.session_state.model_preferences = {
-        "provider": MODEL_PROVIDER.value,
-        "granite_model": list(GRANITE_MODELS.keys())[0] if SHOW_MODEL_SELECTOR else None
-    }
-
-if "user_info" not in st.session_state:
-    logger.info("Loading user info from local storage")
-    st.session_state.user_info = load_from_local_storage()
+if "agent_state" not in st.session_state:
+    logger.info("Initializing agent state")
+    st.session_state.agent_state = get_default_state()
 
 def clear_chat_history():
     """Clear only the chat history while preserving model preferences."""
     logger.info("Clearing chat history")
-    st.session_state.messages = []
-    save_to_local_storage()
+    # Reset messages in agent state
+    st.session_state.agent_state["messages"] = []
+    
+    # Reset conversation context but keep user info
+    st.session_state.agent_state["conversation_context"] = ConversationContext(
+        user_info=st.session_state.agent_state["conversation_context"].user_info,
+        previous_queries=[],
+        extracted_info={},
+        last_intent=None,
+        last_required_actions=None
+    )
 
 def logout():
     """Complete reset of all session state and preferences."""
@@ -162,12 +126,7 @@ def logout():
         del st.session_state[key]
     
     # Reinitialize with default values
-    st.session_state.messages = []
-    st.session_state.model_preferences = {
-        "provider": MODEL_PROVIDER.value,
-        "granite_model": list(GRANITE_MODELS.keys())[0] if SHOW_MODEL_SELECTOR else None
-    }
-    st.session_state.user_info = {"name": "", "conditions": []}
+    st.session_state.agent_state = get_default_state()
     logger.info("Logout complete - reset to initial state")
     st.rerun()
 
@@ -189,12 +148,36 @@ def handle_api_error(error: Exception) -> str:
     else:
         return f"An error occurred: {str(error)}"
 
+def process_message(message: str) -> str:
+    """Process a user message and return the AI response."""
+    try:
+        logger.info(f"New chat message received: {message}")
+        
+        # Get the current agent state
+        current_state = st.session_state.agent_state
+        
+        # Process the message through the graph
+        response = create_chatbot().invoke(current_state)
+        
+        logger.info("Received response from AI model")
+        
+        # Update the agent state with the response
+        st.session_state.agent_state = response
+        
+        # Get the last message from the response
+        if response["messages"]:
+            return response["messages"][-1]["content"]
+        return "I apologize, but I couldn't generate a response."
+    except Exception as e:
+        logger.error(f"Error in AI response: {str(e)}")
+        return f"Error: {str(e)}"
+
 # Main content
 st.title("🌪️ Vayu")
 st.markdown("### Weather the Change")
 
 # User information form
-if not st.session_state.user_info["name"]:
+if not st.session_state.agent_state["conversation_context"].user_info.get("name"):
     logger.info("Showing user information form")
     with st.form("user_info_form", clear_on_submit=True):
         st.subheader("Welcome to Your Travel Health Assistant")
@@ -213,15 +196,14 @@ if not st.session_state.user_info["name"]:
         if submitted:
             if name:  # Basic validation
                 logger.info(f"User info submitted - Name: {name}, Conditions: {conditions}")
-                st.session_state.user_info["name"] = name
-                st.session_state.user_info["conditions"] = conditions
-                save_to_local_storage()
+                st.session_state.agent_state["conversation_context"].user_info["name"]=name
+                st.session_state.agent_state["conversation_context"].user_info["conditions"]=conditions
                 st.rerun()
             else:
                 logger.warning("Form submitted without name")
                 st.error("Please enter your name")
 else:
-    logger.info(f"User {st.session_state.user_info['name']} logged in, showing main app")
+    logger.info(f"User {st.session_state.agent_state['conversation_context'].user_info.get('name')} logged in, showing main app")
     st.markdown("Your AI companion for respiratory health and travel advisories")
 
     # Sidebar
@@ -232,8 +214,8 @@ else:
         
         # User info display
         st.subheader("Your Health Profile")
-        st.write(f"👤 {st.session_state.user_info['name']}")
-        st.write("🏥 Conditions:", ", ".join(st.session_state.user_info["conditions"]))
+        st.write(f"👤 {st.session_state.agent_state['conversation_context'].user_info.get('name')}")
+        st.write("🏥 Conditions:", ", ".join(st.session_state.agent_state['conversation_context'].user_info.get("conditions")))
         st.markdown("---")
         
         # Model Settings section
@@ -242,20 +224,15 @@ else:
             current_provider = st.selectbox(
                 "Select Model Provider",
                 ["IBM Watson", "OpenAI"],
-                index=0 if st.session_state.model_preferences["provider"] == "ibm" else 1,
+                index=0 if st.session_state.agent_state["model_preferences"]["provider"] == "ibm" else 1,
                 key="provider_selector"
             )
             
-            # Update environment variable and session state
+            # Update provider in session state
             new_provider = "ibm" if current_provider == "IBM Watson" else "openai"
-            if new_provider != st.session_state.model_preferences["provider"]:
-                logger.info(f"Switching model provider from {st.session_state.model_preferences['provider']} to {new_provider}")
-                st.session_state.model_preferences["provider"] = new_provider
-                os.environ["MODEL_PROVIDER"] = new_provider
-                # Clear any existing model instances
-                if "chat_model" in st.session_state:
-                    logger.info("Clearing cached model instance")
-                    del st.session_state.chat_model
+            if new_provider != st.session_state.agent_state["model_preferences"]["provider"]:
+                logger.info(f"Switching model provider from {st.session_state.agent_state['model_preferences']['provider']} to {new_provider}")
+                st.session_state.agent_state["model_preferences"]["provider"] = new_provider
             
             # Show model variant selector
             st.markdown("---")
@@ -264,45 +241,26 @@ else:
                 selected_model_label = st.selectbox(
                     "Select Granite Model",
                     options=list(GRANITE_MODELS.keys()),
-                    index=list(GRANITE_MODELS.keys()).index(st.session_state.model_preferences.get("granite_model_label", list(GRANITE_MODELS.keys())[0])),
+                    index=list(GRANITE_MODELS.keys()).index(st.session_state.agent_state["model_preferences"].get("granite_model_label", "Granite 3.2B Instruct")),
                     key="model_selector"
                 )
                 selected_model_id = GRANITE_MODELS[selected_model_label]
-                if selected_model_id != st.session_state.model_preferences.get("granite_model"):
+                if selected_model_id != st.session_state.agent_state["model_preferences"].get("granite_model"):
                     logger.info(f"Switching Granite model to {selected_model_label} ({selected_model_id})")
-                    st.session_state.model_preferences["granite_model"] = selected_model_id
-                    st.session_state.model_preferences["granite_model_label"] = selected_model_label
-                    os.environ["IBM_MODEL"] = selected_model_id
-                    if "chat_model" in st.session_state:
-                        logger.info("Clearing cached model instance")
-                        del st.session_state.chat_model
+                    st.session_state.agent_state["model_preferences"]["granite_model"] = selected_model_id
+                    st.session_state.agent_state["model_preferences"]["granite_model_label"] = selected_model_label
             else:  # OpenAI
                 selected_model_label = st.selectbox(
                     "Select OpenAI Model",
                     options=list(OPENAI_MODELS.keys()),
-                    index=list(OPENAI_MODELS.keys()).index(st.session_state.model_preferences.get("openai_model_label", list(OPENAI_MODELS.keys())[0])),
+                    index=list(OPENAI_MODELS.keys()).index(st.session_state.agent_state["model_preferences"].get("openai_model_label", list(OPENAI_MODELS.keys())[0])),
                     key="openai_model_selector"
                 )
                 selected_model_id = OPENAI_MODELS[selected_model_label]
-                if selected_model_id != st.session_state.model_preferences.get("openai_model"):
+                if selected_model_id != st.session_state.agent_state["model_preferences"].get("openai_model"):
                     logger.info(f"Switching OpenAI model to {selected_model_label} ({selected_model_id})")
-                    st.session_state.model_preferences["openai_model"] = selected_model_id
-                    st.session_state.model_preferences["openai_model_label"] = selected_model_label
-                    os.environ["OPENAI_MODEL"] = selected_model_id
-                    if "chat_model" in st.session_state:
-                        logger.info("Clearing cached model instance")
-                        del st.session_state.chat_model
-        else:
-            logger.info("Model selector is disabled, using default model from environment variables")
-            # Use the model IDs from environment variables
-            if MODEL_PROVIDER.value == "ibm":
-                st.session_state.model_preferences["provider"] = "ibm"
-                st.session_state.model_preferences["granite_model"] = IBM_MODEL
-                logger.info(f"Using IBM model from env: {IBM_MODEL}")
-            else:  # OpenAI
-                st.session_state.model_preferences["provider"] = "openai"
-                st.session_state.model_preferences["openai_model"] = OPENAI_MODEL
-                logger.info(f"Using OpenAI model from env: {OPENAI_MODEL}")
+                    st.session_state.agent_state["model_preferences"]["openai_model"] = selected_model_id
+                    st.session_state.agent_state["model_preferences"]["openai_model_label"] = selected_model_label
         
         st.markdown("---")
         st.markdown("### Quick Actions")
@@ -341,42 +299,27 @@ else:
         """)
 
     # Display chat messages
-    for message in st.session_state.messages:
+    for message in st.session_state.agent_state["messages"]:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
     # Chat input
     if prompt := st.chat_input("Ask about weather conditions and travel advisories..."):
-        logger.info(f"New chat message received: {prompt[:50]}...")
         # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        save_to_local_storage()
-        
-        # Display user message
-        with st.chat_message("user"):
-            st.markdown(prompt)
+        st.session_state.agent_state["messages"].append({"role": "user", "content": prompt})
         
         # Get AI response
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
                 try:
-                    logger.info(f"Calling AI model: {st.session_state.model_preferences['provider']}")
-                    if st.session_state.model_preferences["provider"] == "ibm":
-                        logger.info(f"Using Granite model: {st.session_state.model_preferences['granite_model']}")
-                    
-                    response = get_model_response(
-                        prompt,
-                        system_message="You are Vayu, an AI assistant focused on providing weather-based travel health advisories. You help users make informed decisions about travel based on weather conditions, air quality, and respiratory health factors. Be concise, informative, and always prioritize user health and safety.",
-                        provider=st.session_state.model_preferences["provider"],
-                        granite_model=st.session_state.model_preferences.get("granite_model"),
-                        openai_model=st.session_state.model_preferences.get("openai_model")
-                    )
-                    logger.info("Received response from AI model")
+                    response = process_message(prompt)
                     st.markdown(response)
-                    st.session_state.messages.append({"role": "assistant", "content": response})
-                    save_to_local_storage()
+                    #st.session_state.agent_state["messages"].append({"role": "assistant", "content": response})
                 except Exception as e:
                     error_message = handle_api_error(e)
                     logger.error(f"Error in AI response: {str(e)}")
                     st.markdown(f'<div class="error-message">{error_message}</div>', unsafe_allow_html=True)
-                    st.info("Please check your API keys and model settings in the sidebar.") 
+                    st.info("Please check your API keys and model settings in the sidebar.")
+        
+        # Rerun to update the chat display
+        st.rerun() 
