@@ -1,3 +1,4 @@
+import traceback
 import streamlit as st
 import os
 import json
@@ -36,6 +37,9 @@ logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
+
+#Create Langgraph based chatbot
+chatbot = create_chatbot()
 
 # Set page config
 st.set_page_config(
@@ -157,7 +161,18 @@ def process_message(message: str) -> str:
         current_state = st.session_state.agent_state
         
         # Process the message through the graph
-        response = create_chatbot().invoke(current_state)
+        response = chatbot.invoke(current_state)
+        
+        # Check if the graph was interrupted
+        if isinstance(response, tuple):
+            state, interrupt = response
+            if interrupt:
+                logger.info("Graph interrupted, waiting for user input")
+                # Update state and return the last message
+                st.session_state.agent_state = state
+                if state["messages"]:
+                    return state["messages"][-1]["content"]
+                return "I need more information to help you."
         
         logger.info("Received response from AI model")
         
@@ -169,6 +184,7 @@ def process_message(message: str) -> str:
             return response["messages"][-1]["content"]
         return "I apologize, but I couldn't generate a response."
     except Exception as e:
+        traceback.print_exc()
         logger.error(f"Error in AI response: {str(e)}")
         return f"Error: {str(e)}"
 
@@ -317,6 +333,7 @@ else:
                     #st.session_state.agent_state["messages"].append({"role": "assistant", "content": response})
                 except Exception as e:
                     error_message = handle_api_error(e)
+                    traceback.print_exc()
                     logger.error(f"Error in AI response: {str(e)}")
                     st.markdown(f'<div class="error-message">{error_message}</div>', unsafe_allow_html=True)
                     st.info("Please check your API keys and model settings in the sidebar.")

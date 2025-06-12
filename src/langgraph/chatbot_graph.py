@@ -40,6 +40,7 @@ class AgentState(TypedDict):
     weather_data: Dict[str, Any]
     medical_info: List[Dict[str, Any]]
     model_preferences: Optional[Dict[str, Any]]
+    validation_status: Dict[str, bool]
 
 def get_default_state() -> AgentState:
     """Create a default state with all required fields initialized."""
@@ -71,7 +72,12 @@ def get_default_state() -> AgentState:
         "parsed_query": {},
         "weather_data": {},
         "medical_info": [],
-        "model_preferences": model_preferences
+        "model_preferences": model_preferences,
+        "validation_status": {
+            "is_complete": False,
+            "needs_weather": False,
+            "needs_medical": False
+        }
     }
 
 def parse_query(state: AgentState) -> AgentState:
@@ -126,14 +132,25 @@ def get_weather_data(state: AgentState) -> AgentState:
     """Get weather data if the query is about weather."""
     try:
         if not state.get("parsed_query"):
+            logger.warning("No parsed query in state")
             return state
 
         parsed_query = state["parsed_query"]
-        if parsed_query.get("intent") == "weather_inquiry":
-            location = parsed_query.get("extracted_info", {}).get("location")
+        if parsed_query["required_actions"]["needs_weather_data"]:
+            location = parsed_query["extracted_info"]["location"]
+            date_range = parsed_query["extracted_info"]["date_range"]
+            
             if location:
-                weather_data = weather_tool.get_weather(location=location)
+                logger.info(f"Getting weather data for {location}")
+                weather_data = weather_tool.get_weather(
+                    location=location,
+                    start_date=date_range.get("start"),
+                    end_date=date_range.get("end")
+                )
                 state["weather_data"] = weather_data
+                logger.info("Weather data retrieved successfully")
+            else:
+                logger.warning("No location found in parsed query")
 
         return state
     except Exception as e:
@@ -144,14 +161,25 @@ def get_medical_info(state: AgentState) -> AgentState:
     """Get medical information if the query is about health."""
     try:
         if not state.get("parsed_query"):
+            logger.warning("No parsed query in state")
             return state
 
         parsed_query = state["parsed_query"]
-        if parsed_query.get("intent") == "health_inquiry":
-            condition = parsed_query.get("extracted_info", {}).get("condition")
-            if condition:
-                medical_info = medical_tool.get_medical_info(condition=condition)
+        if parsed_query["required_actions"]["needs_medical_research"]:
+            # Get user's health conditions from conversation context
+            conditions = state["conversation_context"].user_info.get("conditions", [])
+            
+            if conditions:
+                logger.info(f"Getting medical info for conditions: {conditions}")
+                medical_info = []
+                for condition in conditions:
+                    info = medical_tool.get_medical_info(condition=condition)
+                    if info:
+                        medical_info.extend(info)
                 state["medical_info"] = medical_info
+                logger.info("Medical info retrieved successfully")
+            else:
+                logger.warning("No health conditions found in user info")
 
         return state
     except Exception as e:
@@ -184,22 +212,35 @@ def generate_response(state: AgentState) -> AgentState:
     """Generate a response based on the parsed query and gathered information."""
     try:
         if not state.get("parsed_query"):
+            logger.warning("No parsed query in state")
             return state
 
-        # Get the last message for context
-        last_msg = state["messages"][-1] if state["messages"] else None
-        last_message = last_msg.get("content", None) if isinstance(last_msg, dict) else last_msg.content if last_msg else ""
-
-        # Generate response based on intent and gathered data
-        response = ""
         parsed_query = state["parsed_query"]
-        
-        if parsed_query.get("intent") == "weather_inquiry":
-            response = format_weather_response(state["weather_data"])
-        elif parsed_query.get("intent") == "health_inquiry":
-            response = format_medical_response(state["medical_info"])
+        response = ""
+
+        # If the query is incomplete, use the response from QueryParserTool
+        if not parsed_query.get("is_complete", False):
+            response = parsed_query["response"]["text"]
         else:
-            response = "I understand your query. How can I help you further?"
+            # Generate response based on gathered data
+            if parsed_query["required_actions"]["needs_weather_data"]:
+                if not state.get("weather_data"):
+                    response = "I'm having trouble getting the weather information. Please try again."
+                else:
+                    weather_response = format_weather_response(state["weather_data"])
+                    response += weather_response + "\n\n"
+
+            if parsed_query["required_actions"]["needs_medical_research"]:
+                if not state.get("medical_info"):
+                    response += "\nI'm having trouble getting the medical information. Please try again."
+                else:
+                    medical_response = format_medical_response(state["medical_info"])
+                    response += medical_response
+
+            # If we still don't have a response, something went wrong
+            if not response:
+                logger.error("No response generated despite complete query")
+                response = "I'm having trouble processing your request. Please try again with a different query."
 
         # Add the response to messages
         state["messages"].append({
@@ -212,6 +253,66 @@ def generate_response(state: AgentState) -> AgentState:
         logger.error(f"Error in generate_response: {str(e)}")
         return state
 
+def validate_info(state: AgentState) -> AgentState:
+    """Update state with validation information."""
+    try:
+        parsed = state["parsed_query"]
+        logger.info(f"Validating query with intent: {parsed.get('intent')}")
+        
+        # Add validation status to state
+        state["validation_status"] = {
+            "is_complete": parsed.get("is_complete", False),
+            "needs_weather": parsed["required_actions"]["needs_weather_data"],
+            "needs_medical": parsed["required_actions"]["needs_medical_research"]
+        }
+        
+        logger.info(f"Validation status: {state['validation_status']}")
+        return state
+    except Exception as e:
+        logger.error(f"Error in validate_info: {str(e)}")
+        state["validation_status"] = {
+            "is_complete": False,
+            "needs_weather": False,
+            "needs_medical": False
+        }
+        return state
+
+def get_next_node(state: AgentState) -> str:
+    """Determine the next node based on validation status."""
+    try:
+        validation = state.get("validation_status", {})
+        
+        if not validation.get("is_complete", False):
+            logger.info("Query incomplete, requesting missing information")
+            return "ask_missing_info"
+        
+        if validation.get("needs_weather", False):
+            logger.info("Query needs weather data, proceeding to weather tool")
+            return "get_weather_data"
+        
+        logger.info("Query complete, generating response")
+        return "generate_response"
+    except Exception as e:
+        logger.error(f"Error in get_next_node: {str(e)}")
+        return "generate_response"
+
+def ask_missing_info(state: AgentState) -> AgentState:
+    """Use parsed_query's response to ask for missing info."""
+    try:
+        parsed = state["parsed_query"]
+        logger.info("Asking for missing information")
+        
+        # Add the response from QueryParserTool to messages
+        state["messages"].append({
+            "role": "assistant",
+            "content": parsed["response"]["text"]
+        })
+        
+        return state
+    except Exception as e:
+        logger.error(f"Error in ask_missing_info: {str(e)}")
+        return state
+
 def create_chatbot() -> StateGraph:
     """Create the chatbot graph."""
     # Create the graph
@@ -219,16 +320,30 @@ def create_chatbot() -> StateGraph:
 
     # Add nodes
     graph.add_node("parse_query", parse_query)
+    graph.add_node("validate_info", validate_info)
+    graph.add_node("ask_missing_info", ask_missing_info)
     graph.add_node("get_weather_data", get_weather_data)
     graph.add_node("get_medical_info", get_medical_info)
     graph.add_node("generate_response", generate_response)
 
-    # Add edges
-    graph.add_edge("parse_query", "get_weather_data")
+    # Add conditional edges based on validation status
+    graph.add_conditional_edges(
+        "validate_info",
+        get_next_node,
+        {
+            "ask_missing_info": "ask_missing_info",
+            "get_weather_data": "get_weather_data",
+            "generate_response": "generate_response"
+        }
+    )
+
+    # Add regular edges
+    graph.add_edge("parse_query", "validate_info")
+    graph.add_edge("ask_missing_info", "parse_query")  # Loop back for missing info
     graph.add_edge("get_weather_data", "get_medical_info")
     graph.add_edge("get_medical_info", "generate_response")
 
     # Set entry point
     graph.set_entry_point("parse_query")
 
-    return graph.compile() 
+    return graph.compile(interrupt_after=["ask_missing_info"]) 

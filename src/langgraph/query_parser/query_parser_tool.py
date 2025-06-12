@@ -15,6 +15,13 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def is_valid_date(date_str):
+    try:
+        datetime.strptime(date_str, "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
+
 @dataclass
 class ConversationContext:
     """Maintains the state of the conversation."""
@@ -88,11 +95,13 @@ Extracted Information:
 Rules:
 1. If location is missing, mark as incomplete and request the location
 2. If date_range is missing or incomplete, mark as incomplete and request the date range
-3. If health_condition is missing, mark as incomplete and request health information
-4. If all required information is present, mark as complete and set needs_weather_data and needs_medical_research to true
-5. Always return valid JSON matching the specified structure
-6. For incomplete queries, provide a response that requests the missing information
-7. For complete queries, provide a response that acknowledges the information and indicates data collection will begin
+3. If date_range is not in the future and refers to a past date mark as incomplete and request the date range
+4. When parsing dates, extract the full date including the date, month andyear from the user's query (e.g., 'August 17th 2025' should be '08-17-2025'). Do not assume and choose current year unless explicitly stated. If the any of the date fields is ambiguous, mark as incomplete and request the date range.
+5. If health_condition is missing, mark as incomplete and request health information
+6. If all required information is present, mark as complete and set needs_weather_data and needs_medical_research to true
+7. Always return valid JSON matching the specified structure
+8. For incomplete queries, provide a response that requests the missing information
+9. For complete queries, provide a response that acknowledges the information and indicates data collection will begin
 
 Example Response for Complete Query:
 {{
@@ -128,29 +137,52 @@ Example Response for Complete Query:
 
     def parse_query(self, query: str, context: ConversationContext, model_response: str) -> dict:
         try:
+            logger.info(f"Parsing query: {query}")
+            logger.info(f"Model response: {model_response}")
+
             # Parse the model response as JSON
             parsed_response = json.loads(model_response)
             
             # Update conversation context
             context.previous_queries.append(query)
             
-            # Update extracted information
-            if parsed_response["extracted_info"]["location"]:
-                context.extracted_info["location"] = parsed_response["extracted_info"]["location"]
+            # First check if we have any missing required information
+            missing_info = parsed_response.get("required_actions", {}).get("missing_info", [])
+            logger.info(f"Missing information: {missing_info}")
             
-            if parsed_response["extracted_info"]["date_range"]:
-                context.extracted_info["date_range"] = parsed_response["extracted_info"]["date_range"]
+            # Only update extracted information if it's not in the missing_info list
+            extracted_info = parsed_response.get("extracted_info", {})
             
-            if parsed_response["extracted_info"]["health_condition"]:
-                context.extracted_info["health_condition"] = parsed_response["extracted_info"]["health_condition"]
+            # Update location if it's not missing and exists in the response
+            if "location" not in missing_info and extracted_info.get("location"):
+                context.extracted_info["location"] = extracted_info["location"]
+                logger.info(f"Updated location: {extracted_info['location']}")
+            
+            # Update date_range if it's not missing and exists in the 
+            if "date_range" not in missing_info and extracted_info.get("date_range"):
+                date_range = extracted_info["date_range"]
+                current_date_range = context.extracted_info["date_range"]
+                if (date_range.get("start") and date_range.get("end") and
+                    is_valid_date(date_range["start"]) and is_valid_date(date_range["end"]) and
+                    (not current_date_range.get("start") or not current_date_range.get("end"))):
+                    context.extracted_info["date_range"] = date_range
+                    logger.info(f"Updated date range: {date_range}")
+                    logger.info(f"Updated date range: {extracted_info['date_range']}")
+            
+            # Update health_condition if it's not missing and exists in the response
+            if "health_condition" not in missing_info and extracted_info.get("health_condition"):
+                context.extracted_info["health_condition"] = extracted_info["health_condition"]
+                logger.info(f"Updated health condition: {extracted_info['health_condition']}")
             
             # If the query is complete, ensure we trigger data collection
-            if parsed_response["is_complete"]:
+            if parsed_response.get("is_complete", False):
                 parsed_response["required_actions"]["needs_weather_data"] = True
                 parsed_response["required_actions"]["needs_medical_research"] = True
+                logger.info("Query is complete, triggering data collection")
             
             return parsed_response
         except json.JSONDecodeError:
+            logger.error("Failed to parse model response as JSON")
             return {
                 "intent": "error",
                 "extracted_info": {},
@@ -171,6 +203,31 @@ Example Response for Complete Query:
                 },
                 "response": {
                     "text": "I apologize, but I encountered an error processing your request. Please try again.",
+                    "type": "error"
+                }
+            }
+        except Exception as e:
+            logger.error(f"Unexpected error in parse_query: {str(e)}")
+            return {
+                "intent": "error",
+                "extracted_info": {},
+                "relevance": {
+                    "is_relevant": False,
+                    "reason": f"Unexpected error: {str(e)}"
+                },
+                "required_actions": {
+                    "needs_weather_data": False,
+                    "needs_medical_research": False,
+                    "missing_info": []
+                },
+                "is_complete": False,
+                "can_answer": False,
+                "context_used": {
+                    "previous_queries": False,
+                    "user_health_info": False
+                },
+                "response": {
+                    "text": "I apologize, but I encountered an unexpected error. Please try again.",
                     "type": "error"
                 }
             }
