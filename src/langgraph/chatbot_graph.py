@@ -1,5 +1,6 @@
 from typing import Dict, List, Tuple, Any, Union, TypedDict, Optional
 from langgraph.graph import StateGraph
+from langgraph.prebuilt import ToolNode
 from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.query_parser.query_parser_tool import QueryParserTool, ConversationContext
 from langgraph.tools.weather_tool import WeatherTool
@@ -16,6 +17,7 @@ from config import (
     IBM_MODEL,
     OPENAI_MODEL
 )
+import json
 
 # Configure logging
 logging.basicConfig(
@@ -33,12 +35,37 @@ query_parser = QueryParserTool()
 weather_tool = WeatherTool()
 medical_tool = MedicalResearchTool()
 
+# Create tool node with available tools
+tool_node = ToolNode(
+    tools=[weather_tool, medical_tool],
+    llm=get_model_response,
+    system_message="""You are a helpful assistant that can use tools to answer questions about weather and health.
+    Use the available tools when needed to provide accurate information.
+    Always explain your reasoning before using a tool.
+    
+    Available Tools:
+    1. Weather Tool: Get weather and air quality data for a location and date range
+       - Required format: location (string), start_date (YYYY-MM-DD), end_date (YYYY-MM-DD)
+       - Example: {"location": "New York", "start_date": "2024-03-20", "end_date": "2024-03-21"}
+    
+    2. Medical Research Tool: Search medical research for health and weather queries
+       - Required format: condition (string)
+       - Example: {"condition": "asthma"}
+    
+    When using tools:
+    - For weather queries, use the Weather Tool to get current conditions
+    - For health impact queries, use the Medical Research Tool to get relevant medical information
+    - You can use both tools if the query requires both weather and health information
+    - Always ensure the input format matches the required format exactly
+    - If you're unsure about the format, check the parsed query for the correct information
+    """
+)
+
 class AgentState(TypedDict):
     messages: List[Dict[str, str]]  # List of message dictionaries with role and content
     conversation_context: ConversationContext
     parsed_query: Dict[str, Any]
-    weather_data: Dict[str, Any]
-    medical_info: List[Dict[str, Any]]
+    tool_results: Dict[str, Any]  # Store results from tool executions
     model_preferences: Optional[Dict[str, Any]]
     validation_status: Dict[str, bool]
 
@@ -70,8 +97,7 @@ def get_default_state() -> AgentState:
             last_required_actions=None
         ),
         "parsed_query": {},
-        "weather_data": {},
-        "medical_info": [],
+        "tool_results": {},
         "model_preferences": model_preferences,
         "validation_status": {
             "is_complete": False,
@@ -147,7 +173,7 @@ def get_weather_data(state: AgentState) -> AgentState:
                     start_date=date_range.get("start"),
                     end_date=date_range.get("end")
                 )
-                state["weather_data"] = weather_data
+                state["tool_results"]["weather_data"] = weather_data
                 logger.info("Weather data retrieved successfully")
             else:
                 logger.warning("No location found in parsed query")
@@ -176,7 +202,7 @@ def get_medical_info(state: AgentState) -> AgentState:
                     info = medical_tool.get_medical_info(condition=condition)
                     if info:
                         medical_info.extend(info)
-                state["medical_info"] = medical_info
+                state["tool_results"]["medical_info"] = medical_info
                 logger.info("Medical info retrieved successfully")
             else:
                 logger.warning("No health conditions found in user info")
@@ -209,38 +235,47 @@ def format_medical_response(medical_info: List[Dict[str, Any]]) -> str:
     return response
 
 def generate_response(state: AgentState) -> AgentState:
-    """Generate a response based on the parsed query and gathered information."""
+    """Generate a response based on the parsed query and tool results."""
     try:
         if not state.get("parsed_query"):
             logger.warning("No parsed query in state")
             return state
 
         parsed_query = state["parsed_query"]
-        response = ""
+        tool_results = state.get("tool_results", {})
+        
+        # Check for tool execution errors
+        tool_errors = []
+        if parsed_query["required_actions"]["needs_weather_data"] and not tool_results.get("weather_data"):
+            tool_errors.append("weather information")
+        if parsed_query["required_actions"]["needs_medical_research"] and not tool_results.get("medical_info"):
+            tool_errors.append("medical information")
+        
+        # Create a prompt for the LLM to generate a response using tool results
+        response_prompt = f"""Based on the following query and tool results, generate a helpful response:
 
-        # If the query is incomplete, use the response from QueryParserTool
-        if not parsed_query.get("is_complete", False):
-            response = parsed_query["response"]["text"]
-        else:
-            # Generate response based on gathered data
-            if parsed_query["required_actions"]["needs_weather_data"]:
-                if not state.get("weather_data"):
-                    response = "I'm having trouble getting the weather information. Please try again."
-                else:
-                    weather_response = format_weather_response(state["weather_data"])
-                    response += weather_response + "\n\n"
+Query: {state['messages'][-1]['content']}
+Intent: {parsed_query.get('intent')}
+Tool Results: {json.dumps(tool_results, indent=2)}
+Tool Errors: {tool_errors if tool_errors else "None"}
 
-            if parsed_query["required_actions"]["needs_medical_research"]:
-                if not state.get("medical_info"):
-                    response += "\nI'm having trouble getting the medical information. Please try again."
-                else:
-                    medical_response = format_medical_response(state["medical_info"])
-                    response += medical_response
+Generate a response that:
+1. Addresses the user's query directly
+2. Incorporates relevant information from the tool results
+3. If there were tool errors, acknowledge them gracefully and provide what information you can
+4. Provides actionable advice based on the available weather and health information
+5. Maintains a helpful and professional tone"""
 
-            # If we still don't have a response, something went wrong
-            if not response:
-                logger.error("No response generated despite complete query")
-                response = "I'm having trouble processing your request. Please try again with a different query."
+        # Get LLM's response
+        response = get_model_response(
+            response_prompt,
+            system_message="""You are a helpful assistant providing weather and health advice.
+            If you couldn't get some information, be honest about it and provide what you can.
+            Always maintain a helpful and professional tone, even when delivering bad news.""",
+            provider=state.get("model_preferences", {}).get("provider"),
+            granite_model=state.get("model_preferences", {}).get("granite_model"),
+            openai_model=state.get("model_preferences", {}).get("openai_model")
+        )
 
         # Add the response to messages
         state["messages"].append({
@@ -248,9 +283,21 @@ def generate_response(state: AgentState) -> AgentState:
             "content": response
         })
 
+        # Log the response generation
+        logger.info("Generated response successfully")
+        if tool_errors:
+            logger.warning(f"Tool errors encountered: {tool_errors}")
+        logger.debug(f"Full response: {response}")
+
         return state
     except Exception as e:
         logger.error(f"Error in generate_response: {str(e)}")
+        logger.error(traceback.format_exc())
+        # Add a graceful error message
+        state["messages"].append({
+            "role": "assistant",
+            "content": "I apologize, but I encountered an error while processing your request. Please try again with a different query or rephrase your question."
+        })
         return state
 
 def validate_info(state: AgentState) -> AgentState:
@@ -288,7 +335,7 @@ def get_next_node(state: AgentState) -> str:
         
         if validation.get("needs_weather", False):
             logger.info("Query needs weather data, proceeding to weather tool")
-            return "get_weather_data"
+            return "use_tools"
         
         logger.info("Query complete, generating response")
         return "generate_response"
@@ -322,9 +369,24 @@ def create_chatbot() -> StateGraph:
     graph.add_node("parse_query", parse_query)
     graph.add_node("validate_info", validate_info)
     graph.add_node("ask_missing_info", ask_missing_info)
-    graph.add_node("get_weather_data", get_weather_data)
-    graph.add_node("get_medical_info", get_medical_info)
+    graph.add_node("use_tools", tool_node)  # Add the ToolNode
     graph.add_node("generate_response", generate_response)
+
+    # Add logging for tool node
+    def log_tool_execution(state: AgentState) -> AgentState:
+        """Log tool execution results."""
+        try:
+            tool_results = state.get("tool_results", {})
+            if tool_results.get("weather_data"):
+                logger.info("Weather tool executed successfully")
+                logger.debug(f"Weather data: {json.dumps(tool_results['weather_data'], indent=2)}")
+            if tool_results.get("medical_info"):
+                logger.info("Medical tool executed successfully")
+                logger.debug(f"Medical info: {json.dumps(tool_results['medical_info'], indent=2)}")
+            return state
+        except Exception as e:
+            logger.error(f"Error in log_tool_execution: {str(e)}")
+            return state
 
     # Add conditional edges based on validation status
     graph.add_conditional_edges(
@@ -332,7 +394,7 @@ def create_chatbot() -> StateGraph:
         get_next_node,
         {
             "ask_missing_info": "ask_missing_info",
-            "get_weather_data": "get_weather_data",
+            "use_tools": "use_tools",
             "generate_response": "generate_response"
         }
     )
@@ -340,10 +402,13 @@ def create_chatbot() -> StateGraph:
     # Add regular edges
     graph.add_edge("parse_query", "validate_info")
     graph.add_edge("ask_missing_info", "parse_query")  # Loop back for missing info
-    graph.add_edge("get_weather_data", "get_medical_info")
-    graph.add_edge("get_medical_info", "generate_response")
+    graph.add_edge("use_tools", log_tool_execution)  # Add logging after tool execution
+    graph.add_edge(log_tool_execution, "generate_response")
 
     # Set entry point
     graph.set_entry_point("parse_query")
 
-    return graph.compile(interrupt_after=["ask_missing_info"]) 
+    # Add interrupt after ask_missing_info to wait for user input
+    graph.interrupt_after("ask_missing_info")
+
+    return graph.compile() 
